@@ -1,8 +1,18 @@
-export default async function page({
-  searchParams,
-}: {
-  searchParams: Promise<{ q: string }>;
-}) {
-  const { q } = await searchParams;
-  return <div>Search : {q}</div>;
+// components
+import MovieItem from "@/components/movie-item";
+
+// styles
+import style from "./page.module.css";
+
+// data
+import movies from "@/mock/dummy.json";
+
+export default async function page() {
+  return (
+    <div className={style.container}>
+      {movies.map((movie) => (
+        <MovieItem key={movie.id} {...movie} />
+      ))}
+    </div>
+  );
 }

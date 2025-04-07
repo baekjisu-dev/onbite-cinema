@@ -1,0 +1,15 @@
+.container {
+}
+
+.container img {
+  width: 100%;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s linear;
+  cursor: pointer;
+}
+
+.container img:hover {
+  transform: scale(1.1);
+  z-index: 1;
+}
