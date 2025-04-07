@@ -13,7 +13,7 @@ export default function Home() {
       <section>
         <h3>지금 가장 추천하는 영화 🍿</h3>
         <div className={style.reco_movie_area}>
-          {movies.map((movie) => (
+          {movies.slice(0, 3).map((movie) => (
             <MovieItem key={movie.id} {...movie} />
           ))}
         </div>
