@@ -1,6 +1,23 @@
 // styles
+import { notFound } from "next/navigation";
 import style from "./page.module.css";
 import { MovieData } from "@/type";
+
+export async function generateStaticParams() {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie`
+  );
+
+  const movies: MovieData[] = await response.json();
+
+  if (!response.ok) {
+    return [];
+  }
+
+  return movies.map((movie) => ({
+    id: movie.id.toString(),
+  }));
+}
 
 export default async function Page({
   params,
@@ -15,6 +32,9 @@ export default async function Page({
   );
 
   if (!response.ok) {
+    if (response.status === 404) {
+      notFound();
+    }
     return <div>오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>;
   }
 
