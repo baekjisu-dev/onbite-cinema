@@ -5,7 +5,8 @@ import { MovieData } from "@/type";
 
 export async function generateStaticParams() {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie`
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie`,
+    { cache: "force-cache" }
   );
 
   const movies: MovieData[] = await response.json();
