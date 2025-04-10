@@ -6,12 +6,15 @@ import style from "./page.module.css";
 
 // data
 import { MovieData } from "@/type";
+import { delay } from "@/util/delay";
 
 export default async function page({
   searchParams,
 }: {
   searchParams: Promise<{ q: string }>;
 }) {
+  await delay(1500);
+
   const { q } = await searchParams;
 
   const response = await fetch(
