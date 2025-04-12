@@ -7,15 +7,11 @@ import style from "./page.module.css";
 // data
 import { MovieData } from "@/type";
 import { delay } from "@/util/delay";
+import { Suspense } from "react";
+import MovieItemSkeleton from "@/components/skeleton/movie-item-skeleton";
 
-export default async function page({
-  searchParams,
-}: {
-  searchParams: Promise<{ q: string }>;
-}) {
+async function MovieResult({ q }: { q: string }) {
   await delay(1500);
-
-  const { q } = await searchParams;
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/search?q=${q}`,
@@ -30,9 +26,25 @@ export default async function page({
 
   return (
     <div className={style.container}>
-      {movies.map((movie) => (
-        <MovieItem key={movie.id} {...movie} />
-      ))}
+      {movies.length === 0 ? (
+        <div>검색 결과가 없습니다.</div>
+      ) : (
+        movies.map((movie) => <MovieItem key={movie.id} {...movie} />)
+      )}
     </div>
+  );
+}
+
+export default async function page({
+  searchParams,
+}: {
+  searchParams: Promise<{ q: string }>;
+}) {
+  const { q } = await searchParams;
+
+  return (
+    <Suspense key={q} fallback={<MovieItemSkeleton count={3} />}>
+      <MovieResult q={q} />
+    </Suspense>
   );
 }

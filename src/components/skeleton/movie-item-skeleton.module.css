@@ -1,0 +1,10 @@
+.container {
+  width: 100%;
+  display: grid;
+  gap: 5px;
+}
+
+.container > div {
+  width: 100%;
+  aspect-ratio: 2/3;
+}
