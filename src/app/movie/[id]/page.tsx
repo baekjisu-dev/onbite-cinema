@@ -2,6 +2,8 @@
 import { notFound } from "next/navigation";
 import style from "./page.module.css";
 import { MovieData } from "@/type";
+import { ReviewList } from "@/components/review-list";
+import ReviewEditor from "@/components/review-editor";
 
 export async function generateStaticParams() {
   const response = await fetch(
@@ -23,7 +25,7 @@ export async function generateStaticParams() {
 export default async function Page({
   params,
 }: {
-  params: Promise<{ id: string | string[] }>;
+  params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
 
@@ -69,6 +71,8 @@ export default async function Page({
         <p className={style.sub_title}>{subTitle}</p>
         <p>{description}</p>
       </div>
+      <ReviewEditor movieId={id} />
+      <ReviewList movieId={id} />
     </div>
   );
 }
