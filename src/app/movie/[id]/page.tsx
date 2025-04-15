@@ -4,6 +4,7 @@ import style from "./page.module.css";
 import { MovieData } from "@/type";
 import { ReviewList } from "@/components/review-list";
 import ReviewEditor from "@/components/review-editor";
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 export async function generateStaticParams() {
   const response = await fetch(

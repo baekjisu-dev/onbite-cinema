@@ -1,14 +1,22 @@
 "use server";
 
-export async function createReviewAction(formData: FormData) {
-  try {
-    const movieId = formData.get("movieId");
-    const content = formData.get("content");
-    const author = formData.get("author");
+import { delay } from "@/util/delay";
+import { revalidateTag } from "next/cache";
 
-    if (!movieId || !content || !author) {
-      return;
-    }
+export async function createReviewAction(_: any, formData: FormData) {
+  const movieId = formData.get("movieId");
+  const content = formData.get("content");
+  const author = formData.get("author");
+
+  if (!movieId || !content || !author) {
+    return {
+      state: false,
+      error: "모든 필드를 입력해주세요.",
+    };
+  }
+
+  try {
+    await delay(2000);
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review`,
@@ -23,10 +31,20 @@ export async function createReviewAction(formData: FormData) {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to create review");
+      throw new Error(response.statusText);
     }
+
+    revalidateTag(`review-${movieId}`);
+
+    return {
+      state: true,
+      error: "",
+    };
   } catch (e) {
     console.error(e);
-    return;
+    return {
+      state: false,
+      error: `리뷰 작성에 실패했습니다: ${e}`,
+    };
   }
 }
